@@ -28,27 +28,61 @@
     }
 </script>
 
-<h2>Famous Folks</h2>
+<h2>Famous Folks (BareBones)</h2>
 <div style="width: 100%; overflow: hidden;">
-    <div id="folkList" style="width: 50%; float: left;">
-        <table cellspacing="2">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Birth Location</th>
-                    <th></th>
+    <div id="folkList" style="width: 40%; float: left;">
+        <form asp-controller="Folks" asp-action="BareBones", method="post">
+            <table cellspacing="5" cellpadding="5" border="1" style="background-color: dimgrey;">
+                <tr border="0">
+                    <td style="background-color: black; color: white;">Filter Name:</td>
+                    <td><input asp-for="@Model.FilterName" /> </td>
+                    <td rowspan="3" valign="middle"><button type="submit">Update</button></td>
                 </tr>
+                <tr border="0">
+                    <td style="background-color: black; color: white;">Filter Field:</td>
+                    <td>@Html.DropDownListFor(t => t.FilterField, Model.FieldList)</td>
+                </tr>
+                <tr border="0">
+                    <td style="background-color: black; color: white;">Page Size:</td>
+                    <td><input asp-for="@Model.PageSize" /> </td>
+                </tr>
+                <tr border="0">
+                    <td style="background-color: black; color: white;">Name Ascending:</td>
+                    <td>@Html.CheckBoxFor(m => m.SortName);</td>
+                </tr>
+            </table>
+            <p/>
+        </form>
+        <table cellspacing="5" border="1"; style="width:100%">
+            <thead style="background-color: black; color: white;">
+            <tr>
+                <th>Name</th>
+                <th>Birth Location</th>
+                <th></th>
+            </tr>
             </thead>
-            <tbody>
-                @foreach (FolkViewModel folk in Model.Folks)
-                {
-                    <tr onclick="showBio('/Folks/BioPanel/@folk.ID')">
-                        <td>@Html.DisplayFor(x => folk.FullName)</td>
-                        <td>@Html.DisplayFor(x => folk.BirthLocation)</td>
-                    </tr>
-                }
+            <tbody style="background-color: dimgrey; color: white;">
+            @foreach (FolkViewModel folk in Model.Folks)
+            {
+                <tr onclick="showBio('/Folks/BioPanel/@folk.ID')">
+                    <td>@Html.DisplayFor(x => folk.FullName)</td>
+                    <td>@Html.DisplayFor(x => folk.BirthLocation)</td>
+                </tr>
+            }
             </tbody>
         </table>
+        <table cellspacing="5" border="1" style="width: 100%; background-color: lightgrey; color: black;">
+            <tr>
+                <td width="50"><a href="@Url.Action("First", "Folks", Model)" hidden="@(!Model.HasPreviousPage)" title="First" class="links">&lt&lt First</a></td>
+                <td width="50"><a href="@Url.Action("Previous", "Folks", Model)" hidden="@(!Model.HasPreviousPage)" title="First" class="links">&lt Prev</a></td>
+                <td width="50">(@Model.PageIndex / @Model.TotalPages)</td>
+                <td width="50"> <a href="@Url.Action("Next", "Folks", Model)" hidden="@(!Model.HasNextPage)" title="First" class="links">Next &gt</a></td>
+                <td width="50"><a href="@Url.Action("Last", "Folks", Model)" hidden="@(!Model.HasNextPage)" title="First" class="links">Last &gt&gt</a></td>
+            </tr>
+        </table>
+        <hr/>
+        <p><b>@Html.DisplayFor(x => Model.StatusMessage)</b>
+        </p>
     </div>
-    <div id="bioPanel" style="margin-left: 50%;"></div>
+    <div id="bioPanel" style="margin-left: 41%;"></div>
 </div>

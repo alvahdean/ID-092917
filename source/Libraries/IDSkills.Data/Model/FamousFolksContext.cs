@@ -10,6 +10,7 @@ namespace IDSkills.Data
         public FamousFolksContext(DbContextOptions<FamousFolksContext> options)
             : base(options)
         {
+            
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

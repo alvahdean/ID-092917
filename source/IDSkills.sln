@@ -1,21 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDSkills.Data", "Libraries\IDSkills.Data\IDSkills.Data.csproj", "{D447FCA1-CB00-44E1-B651-6C095572686B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDSkills.Data", "Libraries\IDSkills.Data\IDSkills.Data.csproj", "{D447FCA1-CB00-44E1-B651-6C095572686B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDSkills.Contracts", "Libraries\IDSkills.Contracts\IDSkills.Contracts.csproj", "{48D5E240-501A-4D85-9047-0E70C0F83249}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDSkills.Contracts", "Libraries\IDSkills.Contracts\IDSkills.Contracts.csproj", "{48D5E240-501A-4D85-9047-0E70C0F83249}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDSkills.Sample", "IDSkills.Sample\IDSkills.Sample.csproj", "{9B405C4D-DC32-4714-AFB9-87C32FA63F92}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDSkills.WebApp", "Web\IDSkills.WebApp\IDSkills.WebApp.csproj", "{D9606E7C-4E35-4DD4-BAB9-07D24124F685}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDSkills.WebApp", "Web\IDSkills.WebApp\IDSkills.WebApp.csproj", "{D9606E7C-4E35-4DD4-BAB9-07D24124F685}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{312DA501-78A1-474B-93F4-24B22101D833}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{EF037283-01DD-4441-91A2-F36907B8F92C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{9FE2BFD0-00B1-423A-B999-83BF54B0AB39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +27,6 @@ Global
 		{48D5E240-501A-4D85-9047-0E70C0F83249}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48D5E240-501A-4D85-9047-0E70C0F83249}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48D5E240-501A-4D85-9047-0E70C0F83249}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B405C4D-DC32-4714-AFB9-87C32FA63F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B405C4D-DC32-4714-AFB9-87C32FA63F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B405C4D-DC32-4714-AFB9-87C32FA63F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B405C4D-DC32-4714-AFB9-87C32FA63F92}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D9606E7C-4E35-4DD4-BAB9-07D24124F685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D9606E7C-4E35-4DD4-BAB9-07D24124F685}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9606E7C-4E35-4DD4-BAB9-07D24124F685}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,9 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D447FCA1-CB00-44E1-B651-6C095572686B} = {EF037283-01DD-4441-91A2-F36907B8F92C}
 		{48D5E240-501A-4D85-9047-0E70C0F83249} = {EF037283-01DD-4441-91A2-F36907B8F92C}
-		{9B405C4D-DC32-4714-AFB9-87C32FA63F92} = {9FE2BFD0-00B1-423A-B999-83BF54B0AB39}
 		{D9606E7C-4E35-4DD4-BAB9-07D24124F685} = {312DA501-78A1-474B-93F4-24B22101D833}
-		{9FE2BFD0-00B1-423A-B999-83BF54B0AB39} = {312DA501-78A1-474B-93F4-24B22101D833}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF94A8BA-7ACF-4D17-B9C9-417C0DB11CC2}

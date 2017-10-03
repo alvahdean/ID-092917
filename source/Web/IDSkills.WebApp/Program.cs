@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Hosting;
 using IDSkills.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+
 
 namespace IDSkills.WebApp
 {

@@ -14,6 +14,7 @@ namespace IDSkills.Data
         public static bool Clean { get; set; } = false;
         public static void Initialize(FamousFolksContext context)
         {
+            context.Database.Migrate();
             IList<FolkField> fields = new List<FolkField>()
             {
                 new FolkField() {Name="Science"},

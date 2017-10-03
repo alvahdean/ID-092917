@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IDSkills.Data;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IDSkills.WebApp.Models.FamousFolks
 {
@@ -24,6 +25,7 @@ namespace IDSkills.WebApp.Models.FamousFolks
         public string FilterField { get; set; }
         public bool SortName { get; set; }
         public string StatusMessage { get; set; }
+        public List<SelectListItem> FieldList { get; set; }
         public List<FolkViewModel> Folks { get; set; }
     }
 }

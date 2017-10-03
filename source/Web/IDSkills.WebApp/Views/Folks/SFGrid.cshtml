@@ -49,14 +49,13 @@
     FolkListViewModel vmData = (FolkListViewModel)ViewBag.datasource;
     List<FolkViewModel> itemList = vmData.Folks;
     }
-<h2>Famous Folks</h2>
+<h2>Famous Folks (Syncfusion)</h2>
 <div style="width: 100%; overflow: hidden;">
-    <div id="ControlRegion" style="width: 30%; float: left;">
+    <div id="ControlRegion" style="width: 40%; float: left;">
         <ej-grid id="FlatGrid"
                  allow-sorting="true"
                  selectiontype="Single"
                  allow-paging="true"
-                 allow-grouping="true" group-settings="@(new GroupSettings() { GroupedColumns = new List<string>() { "FieldOfExpertise" } })"
                  allow-filtering="true" filter-settings="@(new FilterSettings() { FilterType=FilterType.Excel}) "
                  enable-row-hover="true"
                  datasource="itemList"
@@ -65,11 +64,14 @@
             <e-selection-settings enable-toggle="true"/>
             <e-columns>
                 <e-column field="ID" header-text="ID" text-align="Center" is-primary-key="true" visible="false"></e-column>
-                <e-column field="FieldOfExpertise" header-text="Field" text-align="Center"></e-column>
                 <e-column field="FullName" header-text="Name" text-align="Left"></e-column>
                 <e-column field="BirthLocation" header-text="Birth Location" text-align="Left"></e-column>
+                <e-column field="FieldOfExpertise" header-text="Field" text-align="Center"></e-column>
             </e-columns>
         </ej-grid>
+        <hr />
+        <p><b>@Html.DisplayFor(x => vmData.StatusMessage)</b></p>
+
     </div>
-    <div id="bioPanel" style="margin-left: 35%;"></div>
+    <div id="bioPanel" style="margin-left: 41%;"></div>
 </div>

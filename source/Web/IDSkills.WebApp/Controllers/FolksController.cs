@@ -16,7 +16,7 @@ namespace IDSkills.WebApp.Controllers
 {
     public class FolksController : Controller
     {
-        private const int defPageSize = 3;
+        private const int defPageSize = 2;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
         private FamousFolksContext _context;
@@ -47,19 +47,63 @@ namespace IDSkills.WebApp.Controllers
         /// <returns>IActionResult</returns>
         public IActionResult Index()
         {
-            return new RedirectToActionResult("SFGrid", "Folks",null);
+            return new RedirectToActionResult("BareBones", "Folks",null);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns>Task<IActionResult></returns>
-        public async Task<IActionResult> BareBones()
+        public async Task<IActionResult> BareBones(FolkListViewModel model)
         {
-            //IQueryable<Folk> folks = queryFolksAll();
-            FolkListViewModel vm = await getFolksModel(defPageSize);
-            ViewBag.datasource = vm;
-            return View(vm);
+            model = model ?? new FolkListViewModel() {PageIndex = 1, PageSize = defPageSize};
+            model = await updateModel(model);
+            ViewBag.datasource = model;
+            return View(model);
+        }
+        public IActionResult Error()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> First(FolkListViewModel model)
+        {
+            model.Folks = null;
+            model.PageIndex=1;
+            model= await updateModel(model);
+            return new RedirectToActionResult("BareBones","Folks",model);
+        }
+
+        public async Task<IActionResult> Previous(FolkListViewModel model)
+        {
+            model.Folks = null;
+            model.PageIndex--;
+            model = await updateModel(model);
+            return new RedirectToActionResult("BareBones", "Folks", model);
+        }
+
+        public async Task<IActionResult> Next(FolkListViewModel model)
+        {
+            model.Folks = null;
+            model.PageIndex++;
+            model = await updateModel(model);
+            return new RedirectToActionResult("BareBones", "Folks", model);
+        }
+
+        public async Task<IActionResult> Last(FolkListViewModel model)
+        {
+            model.Folks = null;
+            model.PageIndex = model.TotalPages;
+            model = await updateModel(model);
+            return new RedirectToActionResult("BareBones", "Folks", model);
+        }
+        public async Task<IActionResult> All(FolkListViewModel model)
+        {
+            model.Folks = null;
+            model.PageIndex = 1;
+            model.PageSize = 0;
+            model = await updateModel(model);
+            return new RedirectToActionResult("BareBones", "Folks", model);
         }
 
         /// <summary>
@@ -69,7 +113,7 @@ namespace IDSkills.WebApp.Controllers
         public async Task<IActionResult> SFGrid()
         {
             //IQueryable<Folk> folks = queryFolksAll();
-            FolkListViewModel vm = await getFolksModel(defPageSize);
+            FolkListViewModel vm = await getFolksModel(int.MaxValue);
             ViewBag.datasource = vm;
             return View(vm);
         }
@@ -95,9 +139,20 @@ namespace IDSkills.WebApp.Controllers
         /// <returns>Task<List<FolkViewModel>></returns>
         private async Task<List<FolkViewModel>> projectVM(IQueryable<Folk> folks)
         {
-            return folks==null 
-                ? new List<FolkViewModel>()
-                : await folks.Select(t=>new FolkViewModel(t)).ToListAsync();
+            List<FolkViewModel> result = new List<FolkViewModel>();
+            if (folks != null)
+            {
+                List<Folk> list = await folks.ToListAsync();
+                foreach (var f in list)
+                {
+                    FolkViewModel m = new FolkViewModel(f);
+                    if (m != null)
+                        result.Add(m);
+                }
+            }
+            //if (folks!=null)
+            //    await folks.ForEachAsync(t=> result.Add(new FolkViewModel(t)));
+            return result;
         }
 
         /// <summary>
@@ -114,32 +169,60 @@ namespace IDSkills.WebApp.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Task<IQueryable<Folk>></returns>
-        private async Task<IQueryable<Folk>> queryFolks(FolkListViewModel model = null)
+        private async Task<FolkListViewModel> updateModel(FolkListViewModel model = null)
         {
-            IQueryable<Folk> qry = queryFolksAll();
-            if (model != null)
+            model = model ?? new FolkListViewModel()
             {
-                if (!String.IsNullOrWhiteSpace(model.FilterName))
-                    qry = qry.Where(t => t.LastName.Contains(model.FilterName) || t.FirstName.Contains(model.FilterName));
-                if (!String.IsNullOrWhiteSpace(model.FilterField))
-                    qry = qry.Where(t => t.FolkField != null && t.FolkField.Name == model.FilterField);
-                if (model.PageSize < 1)
-                    model.PageSize = defPageSize;
-                qry = model.SortName
-                    ? qry.OrderBy(t => t.LastName).ThenBy(t => t.FirstName)
-                    : qry.OrderByDescending(t => t.LastName).ThenByDescending(t => t.FirstName);
+                PageIndex = 1,
+                PageSize = defPageSize
+            };
 
-                model.TotalRecords = await qry.CountAsync();
+            IQueryable<Folk> qry = queryFolksAll();
+            if (!String.IsNullOrWhiteSpace(model.FilterName))
+                qry = qry.Where(t => t.LastName.Contains(model.FilterName) || t.FirstName.Contains(model.FilterName));
+            if (!String.IsNullOrWhiteSpace(model.FilterField))
+                qry = qry.Where(t => t.FolkField != null && t.FolkField.Name == model.FilterField);
+            if (model.PageSize < 1)
+                model.PageSize = defPageSize;
+            qry = model.SortName
+                ? qry.OrderBy(t => t.LastName).ThenBy(t => t.FirstName)
+                : qry.OrderByDescending(t => t.LastName).ThenByDescending(t => t.FirstName);
 
-                model.TotalPages = (int)Math.Ceiling((double)model.TotalRecords / model.PageSize);
-                if (model.PageIndex > model.TotalPages)
-                    model.PageIndex = model.TotalPages;
-                else if (model.PageIndex < 1)
-                    model.PageIndex = 1;
-                int skip = model.PageSize * (model.PageIndex - 1);
-                qry = qry.Skip(skip).Take(model.PageSize);
+            model.TotalRecords = await qry.CountAsync();
+
+            model.TotalPages = (int) Math.Ceiling((double) model.TotalRecords / model.PageSize);
+            if (model.PageIndex > model.TotalPages)
+                model.PageIndex = model.TotalPages;
+            else if (model.PageIndex < 1)
+                model.PageIndex = 1;
+            model.HasPreviousPage = model.PageIndex > 1 && model.TotalPages > 1;
+            model.HasNextPage = model.PageIndex < model.TotalPages && model.TotalPages > 1;
+            int skip = model.PageSize * (model.PageIndex - 1);
+            qry = qry.Skip(skip).Take(model.PageSize);
+            try
+            {
+
+                model.FieldList = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>()
+                {
+                    new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+                    {
+                        Text = "None",
+                        Value = ""
+                    }
+                };
+                (await _context.FolkFields.Select(t => t.Name).ToListAsync())
+                    .ForEach(t => model.FieldList.Add(
+                        new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() {Text = t, Value = t})
+                    );
+                model.Folks = await projectVM(qry);
+                model.StatusMessage = $"Success: {model.Folks.Count}/{model.TotalRecords} returned";
             }
-            return qry;
+            catch (Exception ex)
+            {
+                model.Folks = new List<FolkViewModel>();
+                model.StatusMessage = $"Exception: {ex.Message}";
+            }
+            return model;
         }
 
         /// <summary>
@@ -155,7 +238,7 @@ namespace IDSkills.WebApp.Controllers
                 PageSize = pageSize,
                 PageIndex = pageIndex
             };
-        return await getFolksModel(model);
+        return await updateModel(model);
         }
 
         /// <summary>
@@ -163,24 +246,24 @@ namespace IDSkills.WebApp.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Task<FolkListViewModel></returns>
-        private async Task<FolkListViewModel> getFolksModel(FolkListViewModel model)
-        {
-            model = model ?? new FolkListViewModel()
-            {
-                PageIndex = 1,
-                PageSize = defPageSize
-            };
-            try
-            {
-                IQueryable<Folk> qry = await queryFolks(model);
-                model.Folks = await projectVM(qry);
-                model.StatusMessage = $"Success: {model.Folks.Count}/{model.TotalRecords} returned";
-            }
-            catch(Exception ex)
-            {
-                model.StatusMessage = $"Exception: {ex.Message}";
-            }
-            return model;
-        }
+        //private async Task<FolkListViewModel> getFolksModelDeprecated(FolkListViewModel model)
+        //{
+        //    model = model ?? new FolkListViewModel()
+        //    {
+        //        PageIndex = 1,
+        //        PageSize = defPageSize
+        //    };
+        //    try
+        //    {
+        //        IQueryable<Folk> qry = await queryFolks(model);
+        //        model.Folks = await projectVM(qry);
+        //        model.StatusMessage = $"Success: {model.Folks.Count}/{model.TotalRecords} returned";
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        model.StatusMessage = $"Exception: {ex.Message}";
+        //    }
+        //    return model;
+        //}
     }
 }
