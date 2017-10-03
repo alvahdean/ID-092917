@@ -1,0 +1,54 @@
+@using Syncfusion;
+@using Syncfusion.JavaScript;
+@using Syncfusion.JavaScript.Models
+@using IDSkills.Data
+@using IDSkills.WebApp.Models.FamousFolks
+
+@*@Model FolksViewModel*@
+@model FolkListViewModel
+@{
+    ViewBag.Title = "Famous Folks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type= "text/javascript" >
+    function showBio(url) {
+        var bioPanelPartial = $('#bioPanel');
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function (data) {
+                bioPanelPartial.html(data);
+                $('#clearBioPanel').click(function () {
+                    bioPanelPartial.html(null);
+                });
+            }
+        });
+    }
+</script>
+
+<h2>Famous Folks</h2>
+<div style="width: 100%; overflow: hidden;">
+    <div id="folkList" style="width: 50%; float: left;">
+        <table cellspacing="2">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Birth Location</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (FolkViewModel folk in Model.Folks)
+                {
+                    <tr onclick="showBio('/Folks/BioPanel/@folk.ID')">
+                        <td>@Html.DisplayFor(x => folk.FullName)</td>
+                        <td>@Html.DisplayFor(x => folk.BirthLocation)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="bioPanel" style="margin-left: 50%;"></div>
+</div>

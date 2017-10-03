@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "ListBox";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>ListBox Features:</h2>
+<br/>
+<li> CheckBox</li>
+<li> Multi-Selection</li>
+<li> VirtualScrolling</li>
+<li> RTL</li>
+<li> Theme - Flat-Azure-Dark</li>
+<br/>
+<div id = "ControlRegion">
+<div class="control frame">
+                    <div class="ctrllabel">
+                        Select a car :
+                    </div>
+                    <ej-list-box id="list1" height="220px" target-id="carsList" show-checkbox="true" allow-multi-selection="true" allow-virtual-scrolling="true" enable-rtl="true">
+                    </ej-list-box>
+                    <ul id="carsList">
+                        <li>Audi A4</li>
+                        <li>Audi A5</li>
+                        <li>Audi A6</li>
+                        <li>Audi A7</li>
+                        <li>Audi A8</li>
+                        <li>BMW 501</li>
+                        <li>BMW 502</li>
+                        <li>BMW 503</li>
+                        <li>BMW 507</li>
+                        <li>BMW 3200</li>
+                    </ul>
+                </div>
+<style type="text/css" class="cssStyles">
+        .ctrllabel {
+            padding: 0px 0px 12px 3px;
+            font-weight: 600;
+        }
+        .e-ddl-popup {
+            margin: 0 auto;
+        }
+</style>
+</div>

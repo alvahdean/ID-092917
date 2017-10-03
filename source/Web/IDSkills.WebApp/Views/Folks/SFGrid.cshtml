@@ -1,0 +1,75 @@
+@using Syncfusion;
+@using Syncfusion.JavaScript;
+@using Syncfusion.JavaScript.Models
+@using IDSkills.WebApp.Models.FamousFolks
+
+@*@Model FolksViewModel*@
+@model FolkListViewModel
+@{
+    ViewBag.Title = "Famous Folks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type= "text/javascript" >
+    function showBio(url) {
+        var bioPanelPartial = $('#bioPanel');
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function (data) {
+                bioPanelPartial.html(data);
+                $('#clearBioPanel').click(function () {
+                    bioPanelPartial.html(null);
+                });
+            }
+        });
+    }
+    function showDebug(data) {
+        alert("Alert: " + data);
+    }
+    function rowselected(args) {
+        var bioPanelPartial = $('#bioPanel');
+        var selName = this.getSelectedRecords()[0].FullName;   //get the selected records values
+        var selID = this.getSelectedRecords()[0].ID;   //get the selected records values
+        var selBioUrl = "/Folks/BioPanel/" + selID;   //get the selected records values
+        $.ajax({
+            url: selBioUrl,
+            type: 'get',
+            success: function (data) {
+                bioPanelPartial.html(data);
+                $('#clearBioPanel').click(function () {
+                    bioPanelPartial.html(null);
+                });
+            }
+        });
+
+    }
+</script>
+@{ 
+    FolkListViewModel vmData = (FolkListViewModel)ViewBag.datasource;
+    List<FolkViewModel> itemList = vmData.Folks;
+    }
+<h2>Famous Folks</h2>
+<div style="width: 100%; overflow: hidden;">
+    <div id="ControlRegion" style="width: 30%; float: left;">
+        <ej-grid id="FlatGrid"
+                 allow-sorting="true"
+                 selectiontype="Single"
+                 allow-paging="true"
+                 allow-grouping="true" group-settings="@(new GroupSettings() { GroupedColumns = new List<string>() { "FieldOfExpertise" } })"
+                 allow-filtering="true" filter-settings="@(new FilterSettings() { FilterType=FilterType.Excel}) "
+                 enable-row-hover="true"
+                 datasource="itemList"
+                 row-selected="rowselected">
+            <e-page-settings page-size="3"/>
+            <e-selection-settings enable-toggle="true"/>
+            <e-columns>
+                <e-column field="ID" header-text="ID" text-align="Center" is-primary-key="true" visible="false"></e-column>
+                <e-column field="FieldOfExpertise" header-text="Field" text-align="Center"></e-column>
+                <e-column field="FullName" header-text="Name" text-align="Left"></e-column>
+                <e-column field="BirthLocation" header-text="Birth Location" text-align="Left"></e-column>
+            </e-columns>
+        </ej-grid>
+    </div>
+    <div id="bioPanel" style="margin-left: 35%;"></div>
+</div>

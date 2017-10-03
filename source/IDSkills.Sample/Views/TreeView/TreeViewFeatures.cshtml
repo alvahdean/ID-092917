@@ -1,0 +1,120 @@
+﻿@using Syncfusion.JavaScript;
+@{
+    ViewBag.Title = "TreeView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>TreeView Features:</h2>
+<br/>
+<li> CheckBox</li>
+<li> Node Editing</li>
+<li> Drag and Drop</li>
+<li> State Maintenance</li>
+<li> RTL</li>
+<li> Context Menu</li>
+<li> Theme - Flat-Azure-Dark</li>
+<br/>
+<div id = "ControlRegion">
+<div style="width: 250px">
+<ej-tree-view id="treeView" show-checkbox="true" allow-editing="true" allow-drag-and-drop="true" allow-drop-child="true" allow-drop-sibling="true" enable-persistence="true" enable-rtl="true">
+            <e-tree-view-items>
+                <e-tree-view-item text="File">
+                    <e-tree-view-child-items>
+                        <e-tree-view-child-item text="Open"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Save"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Save as"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Print preview"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Print"></e-tree-view-child-item>
+                    </e-tree-view-child-items>
+                </e-tree-view-item>
+                <e-tree-view-item text="Edit">
+                    <e-tree-view-child-items>
+                        <e-tree-view-child-item text="Undo"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Redo"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Cut"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Copy"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Paste"></e-tree-view-child-item>
+                    </e-tree-view-child-items>
+                </e-tree-view-item>
+                <e-tree-view-item text="Insert">
+                    <e-tree-view-child-items>
+                        <e-tree-view-child-item text="Page Number"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Table"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Picture"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Comments"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Links"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Symbol"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Diagram"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Textbox"></e-tree-view-child-item>
+                    </e-tree-view-child-items>
+                </e-tree-view-item>
+                <e-tree-view-item text="Format" expanded="true">
+                    <e-tree-view-child-items>
+                        <e-tree-view-child-item text="Arial"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Arial Black"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Arial Narrow"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Courier"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Calibrl"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Times New Romen"></e-tree-view-child-item>
+                    </e-tree-view-child-items>
+                </e-tree-view-item>
+                <e-tree-view-item text="View">
+                    <e-tree-view-child-items>
+                        <e-tree-view-child-item text="Normal"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Web Layout"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Print Layout"></e-tree-view-child-item>
+                        <e-tree-view-child-item text="Task pane"></e-tree-view-child-item>
+                    </e-tree-view-child-items>
+                </e-tree-view-item>
+            </e-tree-view-items>
+        </ej-tree-view>
+</div>
+<div>
+        <ej-menu id="treeviewMenu" menu-type="@MenuType.ContextMenu" show-sub-level-arrows="true" context-menu-target="#treeView" click="menuclick" before-open="beforeOpen">
+            <e-menu-items>
+                <e-menu-item text="Add New Item"></e-menu-item>
+                <e-menu-item text="Remove Item"></e-menu-item>
+                <e-menu-item text="Disable Item"></e-menu-item>
+                <e-menu-item text="Enable Item"></e-menu-item>
+            </e-menu-items>
+        </ej-menu>
+</div>
+<script type="text/javascript">
+        var tabIndex = 1, treeviewObj, contextMenuObj, childMenu, selectedNode;
+        function beforeOpen(args) {
+            var treeviewObj = $("#treeView").data("ejTreeView");
+            contextMenuObj = $("#treeviewMenu").data("ejMenu");
+            childMenu = contextMenuObj.element.children();
+            if ($(args.target).hasClass('e-node-hover')) {
+                $(childMenu).removeClass('e-disable-item');
+                $(childMenu[3]).addClass('e-disable-item');
+            }
+            else if ($(args.target).hasClass('e-node-disable')) {
+                $(childMenu).addClass('e-disable-item');
+                $(childMenu[3]).removeClass('e-disable-item');
+            }
+            if (!$(args.target).hasClass("e-text"))
+                args.cancel = true;
+            else {
+                selectedNode = $(args.target).closest('.e-item');
+                if (!$(args.target).hasClass('e-node-disable'))
+                    treeviewObj.selectNode(selectedNode);
+            }
+        }
+        function menuclick(args) {
+            var treeviewObj = $("#treeView").data("ejTreeView");
+            if (args.events.text == "Add New Item") {
+                treeviewObj.addNode("Item" + tabIndex, selectedNode);
+                tabIndex++;
+            }
+            else if (args.events.text == "Remove Item") {
+                treeviewObj.removeNode(selectedNode);
+            }
+            else if (args.events.text == "Disable Item") {
+                treeviewObj.disableNode(selectedNode)
+            }
+            else if (args.events.text == "Enable Item") {
+                treeviewObj.enableNode(selectedNode)
+            }
+        }
+</script>
+</div>

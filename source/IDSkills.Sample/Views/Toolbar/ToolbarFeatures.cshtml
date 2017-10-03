@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Toolbar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Toolbar Features:</h2>
+<br/>
+<li> Orientation - Horizontal</li>
+<li> RTL</li>
+<li> Theme - Flat-Azure-Dark</li>
+<br/>
+<div id = "ControlRegion">
+<div class="frame">
+        <div class="control">
+            <ej-Toolbar id="edittools" width="100%" dataSource="ViewBag.datasource" orientation="@Orientation.Horizontal" enable-rtl="true">
+                <e-toolbar-fields id="edid" sprite-css-class="spriteCss" />
+            </ej-Toolbar>
+        </div>
+</div>
+<style>
+         .e-tooltxt .e-spriteimg {
+            background-image: url('../../Images/toolbar/editToolbar.png');
+        }
+         .e-tooltxt .e-spriteimg {
+            display: block;
+            background-image: url('../../Images/toolbar/editToolbarl.png');
+            height: 26px;
+            width: 26px;
+            background-repeat: no-repeat;
+        }
+         .e-tooltxt:hover .e-spriteimg {
+            background-image: url('../../Images/toolbar/editToolbarh.png');
+        }
+        .cursor {
+            background-position: -0px -0px;
+        }
+        .select {
+            background-position: -0px -36px;
+        }
+        .move {
+            background-position: -0px -72px;
+        }
+        .rectselect {
+            background-position: -0px -108px;
+        }
+        .roundselect {
+            background-position: -0px -144px;
+        }
+        .brush {
+            background-position: -0px -180px;
+        }
+        .pen {
+            background-position: -0px -216px;
+        }
+        .gradient {
+            background-position: -0px -252px;
+        }
+        .crop {
+            background-position: -0px -288px;
+        }
+        .symbols {
+            background-position: -0px -324px;
+        }
+        .frame {
+            height: 280px;
+            width: 690px;
+            border-radius: none;
+            margin-left: 0;
+            margin-top: 30px;
+            padding: 0;
+        }
+        .control {
+            margin: 120px 45px 0;
+        }
+    </style>
+</div>

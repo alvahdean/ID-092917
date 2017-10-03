@@ -1,0 +1,18 @@
+@using Syncfusion;
+@using Syncfusion.JavaScript;
+@using Syncfusion.JavaScript.Models
+@using IDSkills.Data
+@using IDSkills.WebApp.Models.FamousFolks
+@model IDSkills.WebApp.Models.FamousFolks.FolkViewModel
+<div>
+    <div style="background-color:black; color:white; margin:0px 0px 0px 0px; padding: 5px 5px 5px 5px; border-spacing:0px 0px" >
+        @*<a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |*@
+        <p><a asp-action="Index">@("<< BackToList")</a></p>
+        <center><h3>Biography</h3></center>
+        </div>
+    <div style="background-color:dimgrey; color:white; margin:0px 0px 0px 0px ; padding: 5px 5px 5px 5px; border-spacing:0px 0px">
+        <p><b>Field of Expertise:</b> @Model.FieldOfExpertise</p>
+        <p>@Html.Raw(Model.BioText) </p>
+    </div>
+</div>
+

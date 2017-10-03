@@ -1,0 +1,34 @@
+﻿@using Syncfusion.JavaScript;
+@{
+    ViewBag.Title = "TreeGrid";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>TreeGrid Features:</h2>
+<br/>
+<li> Editing</li>
+<li> Sorting</li>
+<li> Filtering</li>
+<li> Theme - Flat-Azure-Dark</li>
+<br/>
+<div id = "ControlRegion">
+<ej-tree-grid id="TreeGridContainer" datasource="ViewBag.datasource"b
+              allow-sorting="true"
+              allow-filtering="true"
+           child-mapping="Children" tree-column-index="1" is-responsive="true">
+        <e-tree-grid-columns>
+            <e-tree-grid-column field="TaskId" header-text="Task Id" 
+              allow-filtering="true"
+           edit-type="Numeric" width=100 />
+            <e-tree-grid-column field="TaskName" header-text="Task Name" edit-type="String" />
+            <e-tree-grid-column field="FilterStartDate" header-text="Start Date" edit-type="DateTimePicker" filter-edit-type="DateTimePicker" format="{0:MM/dd/yyyy hh:mm tt}" />
+            <e-tree-grid-column field="FilterEndDate" header-text="End Date" edit-type="DateTimePicker" filter-edit-type="DateTimePicker" format="{0:MM/dd/yyyy hh:mm tt}" />
+            <e-tree-grid-column field="Duration" header-text="Duration" edit-type="Numeric" />
+            <e-tree-grid-column field="Progress" header-text="Progress" edit-type="Numeric" />
+        </e-tree-grid-columns>
+        <e-tree-grid-size-settings width="100%" height="350px" />
+        <e-tree-grid-edit-settings allow-deleting="true" allow-adding="true"  
+              allow-editing="true"
+           row-position="AboveSelectedRow" edit-mode="CellEditing" />
+        <e-tree-grid-toolbar-settings show-toolbar="true" toolbar-items="ViewBag.toolbarItems"></e-tree-grid-toolbar-settings>
+    </ej-tree-grid>
+</div>

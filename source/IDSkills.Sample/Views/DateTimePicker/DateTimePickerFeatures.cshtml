@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "DateTimePicker";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>DateTimePicker Features:</h2>
+<br/>
+<li> DateTimePicker Samples - Default Functionalities</li>
+<li> Theme - Flat-Azure-Dark</li>
+<br/>
+<div id = "ControlRegion">
+             <div class="frame">
+        <div class="control">
+            <ej-date-time-picker id="DateTime" value="@DateTime.Now"></ej-date-time-picker>
+        </div>
+    </div>
+<style>
+        .control {
+            width: 210px;
+        }
+        .control .e-datetime-wrap {
+            width: 175px;
+        }
+    </style>	
+</div>
